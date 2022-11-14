@@ -1,0 +1,57 @@
+.addCommentSection {
+  display: block;
+}
+
+.commentForm {
+  display: flex;
+  padding: 10px 10px 5px 10px;
+  position: relative;
+}
+
+.commentForm input {
+  width: 100%;
+  font-size: 20px;
+  font-weight: 400;
+  padding: 5px 65px 5px 15px;
+  border-radius: 30px;
+  border: 1px solid #d2d2d2;
+  outline: none;
+}
+
+.commentForm button.postBtn {
+  position: absolute;
+  font-size: 15px;
+  right: 0;
+  cursor: pointer;
+  color: #00adf7;
+  padding: 10px 25px 10px 13px;
+  text-transform: capitalize;
+  font-weight: 600;
+  border: none;
+  background: transparent;
+  display: block;
+}
+
+.userTag {
+  display: flex;
+  align-items: center;
+  background-color: #00adf7;
+  padding: 0 15px;
+  margin-right: 10px;
+  border-radius: 25px;
+}
+
+.userTag span {
+  color: #fff;
+  margin-right: 15px;
+  font-weight: 600;
+}
+
+.userTag .close {
+  padding: 0;
+  align-items: center;
+  display: contents;
+  font-weight: 600;
+  color: #fff;
+  cursor: pointer;
+}

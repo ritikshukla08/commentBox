@@ -1,0 +1,71 @@
+.commentSection {
+  background-color: #fff;
+  width: 50vw;
+  display: block;
+  box-shadow: 10px 10px 8px #00000029;
+  margin: auto;
+  width: 50vw;
+  height: min-content;
+  margin: 80px auto;
+  border-radius: 10px;
+}
+
+.loading {
+  text-align: center;
+  color: #fff;
+  height: 100vh;
+  margin-top: 40vh;
+}
+
+.heading h3 {
+  text-align: left;
+  padding: 10px 20px;
+  border-bottom: 1px solid #e4e4e4;
+  margin-bottom: 0;
+}
+
+.commentsMain {
+  padding: 10px 20px;
+  overflow-y: scroll;
+  max-height: 62vh;
+}
+
+.userImg {
+  width: 50px;
+  border-radius: 100%;
+}
+
+.userAndComment {
+  display: flex;
+}
+
+.rightSide {
+  margin-left: 20px;
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+}
+
+.rightSide span {
+  font-weight: 700;
+}
+
+.rightSide p {
+  margin-top: 5px;
+}
+
+.replyUserName {
+  color: #1371ff;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.reply a {
+  cursor: pointer;
+  padding-top: 10px;
+}
+
+.reply a:hover {
+  color: #00adf7;
+}
+
