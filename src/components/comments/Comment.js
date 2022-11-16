@@ -10,29 +10,16 @@ const Comment = () => {
   const [replyTag, setReplyTag] = useState(false);
   const [user, setUser] = useState("");
   const [id, setId] = useState("");
-  const [addedData, setAddedData] = useState();
-  const [isLoading, setIsLoading] = useState(false);
-  const commentsCollectionRef = collection(db, "ritik");
+  const commentsCollectionRef = collection(db, "test3");
 
   const fetchData = async () => {
-    setIsLoading(true);
     const response = await getDocs(commentsCollectionRef);
-    console.log(response);
     setData(response.docs.map((doc) => ({ ...doc.data(), Cid: doc.id })));
-    setIsLoading(false);
   };
 
   useEffect(() => {
     fetchData();
   }, []);
-
-  const getDataAdded = (data) => {
-    setAddedData(data);
-  };
-
-  if (isLoading) {
-    return <h2 className={classes.loading}>Loading...</h2>;
-  }
 
   const replyHandler = (idNo) => {
     setUser(`user${idNo}`);
@@ -47,12 +34,11 @@ const Comment = () => {
     setReplyTag(false);
   };
 
-  console.log("data state", data);
-
   const cmtReplies = data?.map((cmt) => {
     let temp = [];
     let filterReplies = data?.filter((val) => val.reply_id === cmt.id);
     cmt.replies = filterReplies;
+    cmt.count = 1;
 
     temp = { ...cmt };
 
@@ -62,14 +48,16 @@ const Comment = () => {
   const finalData = cmtReplies.filter((fil) => fil.reply_id === null);
 
   let temp = [];
+
   const replies = (rplyArr, index, clear = false) => {
     if (clear) temp = [];
 
     rplyArr.map((rply) => {
+      rply.count = index;
       temp.push(rply);
 
       if (rply.replies.length > 0) {
-        replies(rply.replies, rply.id);
+        replies(rply.replies, rply.count + 1);
       }
     });
 
@@ -85,7 +73,7 @@ const Comment = () => {
         {finalData?.map((cmt) => (
           <div key={cmt.id}>
             {cmt.reply_id === null && (
-              <div className={classes.userAndComment}>
+              <div className={classes.userAndComment} id={cmt.id}>
                 <div>
                   <img src={userDefault} className={classes.userImg} />
                 </div>
@@ -106,23 +94,24 @@ const Comment = () => {
                 </div>
               </div>
             )}
-            {replies(cmt.replies, cmt.id, true).map((data) => {
-              return (
-                <CommentBox
-                  key={data.id}
-                  data={data}
-                  click={() => {
-                    replyHandler(data.id);
-                  }}
-                />
-              );
-            })}
+            {cmt.replies &&
+              replies(cmt.replies, cmt.count, true).map((data) => {
+                return (
+                  <CommentBox
+                    key={data.id}
+                    data={data}
+                    click={() => {
+                      replyHandler(data.id);
+                    }}
+                    count={data.count}
+                  />
+                );
+              })}
           </div>
         ))}
       </div>
       <AddComment
         name={user}
-        get={getDataAdded}
         userId={id}
         closeReply={clearReply}
         tag={replyTag}
@@ -134,9 +123,12 @@ const Comment = () => {
 
 export default Comment;
 
-function CommentBox({ data, click }) {
+function CommentBox({ data, click, count }) {
   return (
-    <div style={{ marginLeft: "50px" }} className={classes.userAndComment}>
+    <div
+      style={{ marginLeft: `${50 * count}px` }}
+      className={classes.userAndComment}
+    >
       <div>
         <img src={userDefault} className={classes.userImg} />
       </div>

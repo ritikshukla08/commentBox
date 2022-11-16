@@ -1,11 +1,11 @@
 import React, { useRef, useState } from "react";
 import classes from "./AddComment.module.css";
 import { db } from "../../../firebase-config";
-import { collection, addDoc, doc } from "firebase/firestore";
+import { collection, addDoc } from "firebase/firestore";
 
 const AddComment = (props) => {
   const [myComment, setMyComment] = useState("");
-  const commentCollections = collection(db, "ritik");
+  const commentCollections = collection(db, "test3");
 
   const commentValue = (e) => {
     setMyComment(e.target.value);
@@ -21,17 +21,18 @@ const AddComment = (props) => {
 
   const addData = async (e) => {
     e.preventDefault();
-    await addDoc(commentCollections, {
-      comments: myComment,
-      reply_id: props.tag ? props.userId : null,
-      id: timestamp,
-    });
 
-    props.get(timestamp);
-    setMyComment("");
-    props.closeReply();
+    if (myComment.length > 0) {
+      await addDoc(commentCollections, {
+        comments: myComment,
+        reply_id: props.tag ? props.userId : null,
+        id: timestamp,
+      });
 
-    props.fetch();
+      setMyComment("");
+      props.closeReply();
+      props.fetch();
+    }
   };
 
   return (
@@ -41,7 +42,7 @@ const AddComment = (props) => {
           <div className={classes.userTag}>
             <span>{`@${props.name}`}</span>
             <span onClick={props.closeReply} className={classes.close}>
-              X
+              x
             </span>
           </div>
         )}

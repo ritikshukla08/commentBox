@@ -26,7 +26,7 @@
 
 .commentsMain {
   padding: 10px 20px;
-  overflow-y: scroll;
+  overflow: auto;
   max-height: 62vh;
 }
 
@@ -68,4 +68,3 @@
 .reply a:hover {
   color: #00adf7;
 }
-
