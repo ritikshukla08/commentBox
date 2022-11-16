@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
 import classes from "./Comment.module.css";
 import userDefault from "../../Image/user.png";
 import AddComment from "./addComment/AddComment";
@@ -10,16 +10,33 @@ const Comment = () => {
   const [replyTag, setReplyTag] = useState(false);
   const [user, setUser] = useState("");
   const [id, setId] = useState("");
-  const commentsCollectionRef = collection(db, "test3");
+  const [cmtId, setCmtId] = useState("");
+  const commentsCollectionRef = collection(db, "ritik");
+
+  const getTheId = (id) => {
+    setCmtId(id);
+  };
+
+  const scroll = (id) => {
+    console.log("call scroll ", id);
+    document.querySelector(`#${id}`).scrollIntoView({ behavior: "smooth" });
+    console.log(id);
+  };
 
   const fetchData = async () => {
     const response = await getDocs(commentsCollectionRef);
     setData(response.docs.map((doc) => ({ ...doc.data(), Cid: doc.id })));
+    // if (cmtId) scroll(cmtId);
+    console.log(cmtId);
   };
 
   useEffect(() => {
     fetchData();
-  }, []);
+  }, [cmtId]);
+
+  useLayoutEffect(() => {
+    if (cmtId) scroll(cmtId);
+  }, [data]);
 
   const replyHandler = (idNo) => {
     setUser(`user${idNo}`);
@@ -65,7 +82,7 @@ const Comment = () => {
   };
 
   return (
-    <div className={classes.commentSection}>
+    <div className={classes.commentSection} id="realid">
       <div className={classes.heading}>
         <h3>comments</h3>
       </div>
@@ -116,6 +133,7 @@ const Comment = () => {
         closeReply={clearReply}
         tag={replyTag}
         fetch={fetchData}
+        get={getTheId}
       />
     </div>
   );
@@ -128,6 +146,7 @@ function CommentBox({ data, click, count }) {
     <div
       style={{ marginLeft: `${50 * count}px` }}
       className={classes.userAndComment}
+      id={data.id}
     >
       <div>
         <img src={userDefault} className={classes.userImg} />

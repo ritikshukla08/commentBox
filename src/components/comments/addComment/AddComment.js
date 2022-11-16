@@ -5,7 +5,7 @@ import { collection, addDoc } from "firebase/firestore";
 
 const AddComment = (props) => {
   const [myComment, setMyComment] = useState("");
-  const commentCollections = collection(db, "test3");
+  const commentCollections = collection(db, "ritik");
 
   const commentValue = (e) => {
     setMyComment(e.target.value);
@@ -17,21 +17,24 @@ const AddComment = (props) => {
     inputRef.current.focus();
   }
 
-  let timestamp = new Date().getUTCMilliseconds();
+  let timestamp = `Id${new Date().getUTCMilliseconds()}`;
 
   const addData = async (e) => {
     e.preventDefault();
 
     if (myComment.length > 0) {
-      await addDoc(commentCollections, {
+      const res = await addDoc(commentCollections, {
         comments: myComment,
         reply_id: props.tag ? props.userId : null,
         id: timestamp,
       });
+      console.log("res ", res);
 
       setMyComment("");
       props.closeReply();
+      props.get(timestamp);
       props.fetch();
+      console.log("inside add", document.querySelector(`#${timestamp}`));
     }
   };
 
