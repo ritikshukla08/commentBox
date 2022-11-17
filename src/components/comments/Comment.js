@@ -1,4 +1,4 @@
-import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
+import React, { useEffect, useLayoutEffect, useState } from "react";
 import classes from "./Comment.module.css";
 import userDefault from "../../Image/user.png";
 import AddComment from "./addComment/AddComment";
@@ -17,6 +17,11 @@ const Comment = () => {
     setCmtId(id);
   };
 
+  const setCmtHandler = (cmt) => {
+    console.log("cmt", cmt);
+    setData((oldData) => [...oldData, cmt]);
+  };
+
   const scroll = (id) => {
     console.log("call scroll ", id);
     document.querySelector(`#${id}`).scrollIntoView({ behavior: "smooth" });
@@ -26,13 +31,12 @@ const Comment = () => {
   const fetchData = async () => {
     const response = await getDocs(commentsCollectionRef);
     setData(response.docs.map((doc) => ({ ...doc.data(), Cid: doc.id })));
-    // if (cmtId) scroll(cmtId);
     console.log(cmtId);
   };
 
   useEffect(() => {
     fetchData();
-  }, [cmtId]);
+  }, []);
 
   useLayoutEffect(() => {
     if (cmtId) scroll(cmtId);
@@ -134,6 +138,7 @@ const Comment = () => {
         tag={replyTag}
         fetch={fetchData}
         get={getTheId}
+        setCmt={setCmtHandler}
       />
     </div>
   );

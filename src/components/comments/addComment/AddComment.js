@@ -22,18 +22,20 @@ const AddComment = (props) => {
   const addData = async (e) => {
     e.preventDefault();
 
+    const cmtObj = {
+      comments: myComment,
+      reply_id: props.tag ? props.userId : null,
+      id: timestamp,
+    };
+
     if (myComment.length > 0) {
-      const res = await addDoc(commentCollections, {
-        comments: myComment,
-        reply_id: props.tag ? props.userId : null,
-        id: timestamp,
-      });
+      const res = await addDoc(commentCollections, cmtObj);
       console.log("res ", res);
 
       setMyComment("");
       props.closeReply();
       props.get(timestamp);
-      props.fetch();
+      props.setCmt(cmtObj);
       console.log("inside add", document.querySelector(`#${timestamp}`));
     }
   };
